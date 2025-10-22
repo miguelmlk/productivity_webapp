@@ -3,6 +3,7 @@ import "./App.css";
 import Todo from "./components/Todo";
 import Alert from "./components/Alert";
 import TodoList from "./components/TodoList";
+import { API_BASE_URL } from "./api";
 
 function App() {
   const [impTodo, setImpTodo] = useState([]);
@@ -14,7 +15,7 @@ function App() {
 
   const fetchTodo = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/todos");
+      const response = await fetch(`${API_BASE_URL}/api/todos`);
       const data = await response.json();
       setImpTodo(data.important);
       setNotImpTodo(data.not_important);
@@ -33,7 +34,7 @@ function App() {
       return;
     }
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/todos", {
+      const response = await fetch(`${API_BASE_URL}/api/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +56,7 @@ function App() {
 
   const deleteTodo = async (id: number) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/todos/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/todos/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +74,7 @@ function App() {
 
   const editTodo = async (id: number, newText: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/todos/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/todos/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
