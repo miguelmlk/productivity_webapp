@@ -57,6 +57,20 @@ def delete_todo(todo_id):
     
     return jsonify({'message': f"Todo: {todo_id} not found"}), 404
 
+@app.route("/api/todos/<int:todo_id>", methods=["PUT"])
+def update_todo(todo_id):
+	todo = Todo.query.get(todo_id)
+    
+	if not todo:
+		return jsonify({'message': f"Todo: {todo_id} not found"}), 404
+    
+	data = request.get_json()
+	todo.todo = data.get("todo", todo.todo)
+ 
+	db.session.commit()
+ 
+	return jsonify({'message': f"Todo: {todo_id} updated", "todo": todo.to_dict()})
+
     
 
 if __name__ == "__main__":

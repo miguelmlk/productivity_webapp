@@ -64,6 +64,24 @@ function App() {
     }
   };
 
+  const editTodo = async (id: number, newText: string) => {
+	try {
+		const response = await fetch(`http://127.0.0.1:5000/api/todos/${id}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ todo: newText }),
+		});
+
+		if (response.ok) {
+			await fetchTodo();
+		}
+	} catch (error) {
+		console.error("Error editing todo: ", error);
+	}
+  }
+
   return (
     <>
       <div className="container custom-container">
@@ -76,6 +94,7 @@ function App() {
                 todo_id={t.id}
                 todo={t.todo}
                 onDelete={deleteTodo}
+				onEdit={editTodo}
               ></Todo>
             ))}
           </div>
@@ -111,6 +130,7 @@ function App() {
                 todo_id={t.id}
                 todo={t.todo}
                 onDelete={deleteTodo}
+				onEdit={editTodo}
               ></Todo>
             ))}
           </div>
