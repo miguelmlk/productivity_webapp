@@ -13,11 +13,13 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     todo = db.Column(db.String(200), nullable=False)
     important = db.Column(db.Boolean, default=False)
+    deadline = db.Column(db.String(50), nullable=True)
     
     def to_dict(self):
         return {
 			'id': self.id,
-			'todo': self.todo
+			'todo': self.todo,
+			'deadline': self.deadline
 		}
 
 with app.app_context():
@@ -38,7 +40,8 @@ def add_todo():
  
 	new_todo = Todo(
 		todo=data["todo"],
-		important=data.get("important", False)
+		important=data.get("important", False),
+		deadline=data.get("deadline")
 	)
 
 	db.session.add(new_todo)
@@ -66,6 +69,7 @@ def update_todo(todo_id):
     
 	data = request.get_json()
 	todo.todo = data.get("todo", todo.todo)
+	todo.deadline = data.get("deadline", todo.deadline)
  
 	db.session.commit()
  

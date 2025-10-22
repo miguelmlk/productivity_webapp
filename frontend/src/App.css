@@ -64,11 +64,59 @@ body {
   justify-content: center;
 }
 
+.important-check-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.important-h3 {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
 .input-container input[type="checkbox"] {
   width: 24px;
   height: 24px;
   cursor: pointer;
   accent-color: #1e3a8a;
+}
+
+.input-container input[type="date"] {
+  width: 350px;
+  height: 50px;
+  padding: 0 20px;
+  font-size: 1.1rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: #1e3a8a;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.input-container input[type="date"]:focus {
+  outline: none;
+  border: 2px solid rgba(30, 58, 138, 0.5);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 30px rgba(30, 58, 138, 0.2);
+  transform: translateY(-2px);
+}
+
+.input-container input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: opacity(0.6);
+  transition: all 0.2s ease;
+}
+
+.input-container input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: opacity(1);
 }
 
 .input-container button {
@@ -97,6 +145,7 @@ body {
 /* Todo Component */
 
 .todo-container {
+  position: relative; /* Add this if not already present */
   display: flex;
   width: 85%;
   align-items: center;
@@ -111,6 +160,7 @@ body {
   padding: 18px 30px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  transform-origin: center center;
 }
 
 .todo-container:hover {
@@ -118,6 +168,34 @@ body {
   transform: translateY(-3px) scale(1.2);
   background: rgba(255, 255, 255, 0.45);
   border: 2px solid rgba(30, 58, 138, 0.3);
+}
+
+.todo-deadline {
+  position: absolute;
+  top: -8px;
+  left: 50%;  /* Center horizontally */
+  transform: translateX(-50%);  /* Perfect centering */
+  padding: 4px 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(30, 58, 138, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.todo-container:hover .todo-deadline {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateX(-50%) translateY(-2px);  /* Keep centered while moving up */
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
 
 .trashcan {
@@ -200,6 +278,34 @@ body {
 .todo-edit-input:focus {
   border: 2px solid rgba(30, 58, 138, 0.6);
   background: rgba(255, 255, 255, 0.8);
+}
+
+/* TodoList Component */
+.todo-list-container {
+  max-height: calc(80vh - 250px); /* Adjust based on your header height */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 20px;
+  margin-top: 20px;
+}
+
+/* Custom scrollbar styling (optional, for better look) */
+.todo-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.todo-list-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.todo-list-container::-webkit-scrollbar-thumb {
+  background: rgba(30, 58, 138, 0.5);
+  border-radius: 10px;
+}
+
+.todo-list-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(30, 58, 138, 0.7);
 }
 
 /* Alert Component */

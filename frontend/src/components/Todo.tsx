@@ -5,11 +5,12 @@ import { useState, useRef, useEffect } from "react";
 interface Props {
   todo_id: number;
   todo: string;
+  date: string;
   onDelete: (id: number) => void;
   onEdit: (id: number, newText: string) => void;
 }
 
-const Todo = ({ todo_id, todo, onDelete, onEdit }: Props) => {
+const Todo = ({ todo_id, todo, date, onDelete, onEdit }: Props) => {
   const [isChecked, setChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo);
@@ -45,8 +46,15 @@ const Todo = ({ todo_id, todo, onDelete, onEdit }: Props) => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+	if (!dateString) return "";
+	const date = new Date(dateString)
+	return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"})
+  }
+
   return (
     <div key={todo_id} className="todo-container">
+		{date && <span className="todo-deadline">{formatDate(date)}</span>}
       {isEditing ? (
         <input
           ref={inputRef}
