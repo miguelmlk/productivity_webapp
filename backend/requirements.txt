@@ -21,7 +21,6 @@ certifi==2025.8.3
 cffi==1.15.0
 chardet==4.0.0
 click==8.2.1
-cloud-init==25.1.4
 colorama==0.4.4
 colorgram.py==1.2.0
 command-not-found==0.3
