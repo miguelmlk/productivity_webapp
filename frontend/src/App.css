@@ -136,6 +136,22 @@ body {
   fill: #dc2626;
 }
 
+.edit {
+  height: 22px;
+  width: 22px;
+  cursor: pointer;
+  fill: #1e3a8a;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  margin-left: 15px;
+}
+
+.edit:hover {
+  transform: scale(1.2);
+  opacity: 1;
+  fill: green;
+}
+
 .todo-entry {
   flex: 1;
   margin: 0 15px;
@@ -166,7 +182,6 @@ body {
   opacity: 0.6;
   color: rgba(30, 58, 138, 0.5);
 }
-
 
 /* Alert Component */
 .alert {
