@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Todo from "./components/Todo";
 import Alert from "./components/Alert";
 import TodoList from "./components/TodoList";
 import { API_BASE_URL } from "./api";
 
+interface TodoItem {
+  id: number;
+  todo: string;
+  deadline?: string;
+}
+
 function App() {
-  const [impTodo, setImpTodo] = useState([]);
-  const [notImpTodo, setNotImpTodo] = useState([]);
+  const [impTodo, setImpTodo] = useState<TodoItem[]>([]);
+  const [notImpTodo, setNotImpTodo] = useState<TodoItem[]>([]);
   const [newTodo, setNewTodo] = useState("");
   const [isImp, setImp] = useState(false);
   const [date, setDate] = useState("");
@@ -34,7 +39,7 @@ function App() {
       return;
     }
     try {
-      const response = await fetch(`${API_BASE_URL}/api/todos`, {
+      await fetch(`${API_BASE_URL}/api/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
