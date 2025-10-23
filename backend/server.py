@@ -15,6 +15,7 @@ class Todo(db.Model):
     todo_extra = db.Column(db.String(10000), nullable=True)
     important = db.Column(db.Boolean, default=False)
     deadline = db.Column(db.String(50), nullable=True)
+    position = db.Column(db.Integer, default=0)
     
     def to_dict(self):
         return {
@@ -22,7 +23,8 @@ class Todo(db.Model):
 			'todo': self.todo,
 			'todo_extra': self.todo_extra,
 			'deadline': self.deadline,
-			'important': self.important
+			'important': self.important,
+			'position': self.position
 		}
 
 with app.app_context():
@@ -30,8 +32,21 @@ with app.app_context():
 
 @app.route("/api/todos", methods=["GET"])
 def get_todos():
-    todos = [todo.to_dict() for todo in Todo.query.all()]
+    todos = [todo.to_dict() for todo in Todo.query.order_by(Todo.position).all()]
     return jsonify(todos)
+
+@app.route("/api/todos/reorder", methods=["POST"])
+def reorder_todos():
+    data = request.get_json()
+    todo_order = data.get("order")
+    
+    for index, todo_id in enumerate(todo_order):
+        todo = Todo.query.get(todo_id)
+        if todo:
+            todo.position = index
+    
+    db.session.commit()
+    return jsonify({'message': 'Todos reordered'}), 200
 
 @app.route("/api/todos", methods=["POST"])
 def add_todo():
