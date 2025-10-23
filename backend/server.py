@@ -30,12 +30,8 @@ with app.app_context():
 
 @app.route("/api/todos", methods=["GET"])
 def get_todos():
-    important_todos = [todo.to_dict() for todo in Todo.query.filter_by(important=True).all()]
-    not_important_todos = [todo.to_dict() for todo in Todo.query.filter_by(important=False).all()]
-    return jsonify({
-		"important": important_todos,
-		"not_important": not_important_todos
-	})
+    todos = [todo.to_dict() for todo in Todo.query.all()]
+    return jsonify(todos)
 
 @app.route("/api/todos", methods=["POST"])
 def add_todo():

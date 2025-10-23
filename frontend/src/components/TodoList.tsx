@@ -5,6 +5,7 @@ interface TodoItem {
   todo: string;
   todo_extra?: string;
   deadline?: string;
+  important: boolean;
 }
 
 interface Props {
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const TodoList = ({ title, todos, onDelete, onEdit, onToggleImportance }: Props) => (
-  <div className="col-3 text-center">
+  <div className="col-7 text-center">
     <h1 className="headers">{title}</h1>
     <div className="todo-list-container">
       {todos.map((t) => (
@@ -26,6 +27,7 @@ const TodoList = ({ title, todos, onDelete, onEdit, onToggleImportance }: Props)
           todo={t.todo}
 		  todo_extra={t.todo_extra}
 		  date={t.deadline || ""}
+		  important={t.important}
           onDelete={onDelete}
           onEdit={onEdit}
 		  onToggleImportance={onToggleImportance}

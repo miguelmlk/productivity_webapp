@@ -7,12 +7,13 @@ import { API_BASE_URL } from "./api";
 interface TodoItem {
   id: number;
   todo: string;
+  todo_extra?: string;
   deadline?: string;
+  important: boolean;
 }
 
 function App() {
-  const [impTodo, setImpTodo] = useState<TodoItem[]>([]);
-  const [notImpTodo, setNotImpTodo] = useState<TodoItem[]>([]);
+  const [todos, setTodos] = useState<TodoItem[]>([]);
   const [newTodo, setNewTodo] = useState("");
   const [newExtraTodoText, setExtraTodoText] = useState("");
   const [isImp, setImp] = useState(false);
@@ -23,8 +24,7 @@ function App() {
     try {
       const response = await fetch(`${API_BASE_URL}/api/todos`);
       const data = await response.json();
-      setImpTodo(data.important);
-      setNotImpTodo(data.not_important);
+      setTodos(data);
     } catch (err) {
       console.log("Error fetching Todos: ", err);
     }
@@ -72,8 +72,7 @@ function App() {
       });
 
       if (response.ok) {
-        setImpTodo((prev) => prev.filter((todo) => todo.id !== id));
-        setNotImpTodo((prev) => prev.filter((todo) => todo.id !== id));
+        setTodos((prev) => prev.filter((todo) => todo.id !== id));
       }
     } catch (error) {
       console.error("Error deleting todo: ", error);
@@ -139,15 +138,8 @@ function App() {
     <>
       <div className="container custom-container">
         <div className="row custom-row">
-          <TodoList
-            title="Important"
-            todos={impTodo}
-            onDelete={deleteTodo}
-            onEdit={editTodo}
-            onToggleImportance={toggleImportance}
-          />
-          <div className="col-6 text-center">
-            <h1 className="headers">Todo Liste</h1>
+          <div className="col-5 text-center">
+            <h1 className="headers">Create Todo</h1>
             {showAlert && <Alert setShowAlert={setShowAlert}></Alert>}
             <div className="input-container">
               <input
@@ -165,6 +157,13 @@ function App() {
                 onChange={(e) => setExtraTodoText(e.target.value)}
                 rows={3}
               />
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => {
+                  setDate(e.target.value);
+                }}
+              />
               <div className="important-check-container">
                 <h3 className="important-h3">Important:</h3>
                 <input
@@ -177,21 +176,14 @@ function App() {
                   id=""
                 />
               </div>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => {
-                  setDate(e.target.value);
-                }}
-              />
               <button className="btn" onClick={addTodo}>
                 Add
               </button>
             </div>
           </div>
           <TodoList
-            title="Not Important"
-            todos={notImpTodo}
+            title="All Todos"
+            todos={todos}
             onDelete={deleteTodo}
             onEdit={editTodo}
             onToggleImportance={toggleImportance}
