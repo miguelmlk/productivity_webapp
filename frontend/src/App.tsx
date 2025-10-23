@@ -14,6 +14,7 @@ function App() {
   const [impTodo, setImpTodo] = useState<TodoItem[]>([]);
   const [notImpTodo, setNotImpTodo] = useState<TodoItem[]>([]);
   const [newTodo, setNewTodo] = useState("");
+  const [newExtraTodoText, setExtraTodoText] = useState("");
   const [isImp, setImp] = useState(false);
   const [date, setDate] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -46,13 +47,15 @@ function App() {
         },
         body: JSON.stringify({
           todo: newTodo,
+          todo_extra: newExtraTodoText,
           important: isImp,
           deadline: date || null,
         }),
       });
       setNewTodo("");
+      setExtraTodoText("");
       setImp(false);
-	  setDate("");
+      setDate("");
       await fetchTodo();
     } catch (error) {
       console.log("Error adding todo: ", error);
@@ -95,6 +98,43 @@ function App() {
     }
   };
 
+  const handleSave = () => {
+    if (newTodo.trim() !== "") {
+      addTodo();
+    } else {
+      setNewTodo("");
+    }
+  };
+
+  const handleCancel = () => {
+    setNewTodo("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSave();
+    } else if (e.key === "Escape") {
+      handleCancel();
+    }
+  };
+
+  const toggleImportance = async (id: number) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/todos/${id}/toggle`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        await fetchTodo();
+      }
+    } catch (error) {
+      console.error("Error toggling importance: ", error);
+    }
+  };
+
   return (
     <>
       <div className="container custom-container">
@@ -104,6 +144,7 @@ function App() {
             todos={impTodo}
             onDelete={deleteTodo}
             onEdit={editTodo}
+            onToggleImportance={toggleImportance}
           />
           <div className="col-6 text-center">
             <h1 className="headers">Todo Liste</h1>
@@ -112,8 +153,17 @@ function App() {
               <input
                 type="text"
                 className="todoInput"
+                placeholder="Todo"
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+              <textarea
+                className="todoExtraInput"
+                placeholder="Extra Text"
+                value={newExtraTodoText}
+                onChange={(e) => setExtraTodoText(e.target.value)}
+                rows={3}
               />
               <div className="important-check-container">
                 <h3 className="important-h3">Important:</h3>
@@ -144,6 +194,7 @@ function App() {
             todos={notImpTodo}
             onDelete={deleteTodo}
             onEdit={editTodo}
+            onToggleImportance={toggleImportance}
           />
         </div>
       </div>

@@ -3,6 +3,7 @@ import Todo from "./Todo";
 interface TodoItem {
   id: number;
   todo: string;
+  todo_extra?: string;
   deadline?: string;
 }
 
@@ -11,9 +12,10 @@ interface Props {
   todos: TodoItem[];
   onDelete: (id: number) => void;
   onEdit: (id: number, newText: string) => void;
+  onToggleImportance: (id: number) => void;
 }
 
-const TodoList = ({ title, todos, onDelete, onEdit }: Props) => (
+const TodoList = ({ title, todos, onDelete, onEdit, onToggleImportance }: Props) => (
   <div className="col-3 text-center">
     <h1 className="headers">{title}</h1>
     <div className="todo-list-container">
@@ -22,9 +24,11 @@ const TodoList = ({ title, todos, onDelete, onEdit }: Props) => (
           key={t.id}
           todo_id={t.id}
           todo={t.todo}
+		  todo_extra={t.todo_extra}
 		  date={t.deadline || ""}
           onDelete={onDelete}
           onEdit={onEdit}
+		  onToggleImportance={onToggleImportance}
         />
       ))}
     </div>

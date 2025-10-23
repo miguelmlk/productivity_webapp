@@ -12,6 +12,7 @@ db = SQLAlchemy(app)
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     todo = db.Column(db.String(200), nullable=False)
+    todo_extra = db.Column(db.String(10000), nullable=True)
     important = db.Column(db.Boolean, default=False)
     deadline = db.Column(db.String(50), nullable=True)
     
@@ -19,7 +20,9 @@ class Todo(db.Model):
         return {
 			'id': self.id,
 			'todo': self.todo,
-			'deadline': self.deadline
+			'todo_extra': self.todo_extra,
+			'deadline': self.deadline,
+			'important': self.important
 		}
 
 with app.app_context():
@@ -40,6 +43,7 @@ def add_todo():
  
 	new_todo = Todo(
 		todo=data["todo"],
+		todo_extra = data.get("todo_extra"),
 		important=data.get("important", False),
 		deadline=data.get("deadline")
 	)
@@ -75,6 +79,21 @@ def update_todo(todo_id):
  
 	return jsonify({'message': f"Todo: {todo_id} updated", "todo": todo.to_dict()})
 
+@app.route("/api/todos/<int:todo_id>/toggle", methods=["PATCH"])
+def toggle_importance(todo_id):
+    todo = Todo.query.get(todo_id)
+    
+    if not todo:
+        return jsonify({'message': f"Todo: {todo_id} not found"}), 404
+    
+    todo.important = not todo.important
+    
+    db.session.commit()
+    
+    return jsonify({
+		'message': f"Todo: {todo_id} importance toggled",
+		"todo": todo.to_dict()
+	}), 200
     
 
 if __name__ == "__main__":
