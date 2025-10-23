@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Alert from "./components/Alert";
 import TodoList from "./components/TodoList";
 import { API_BASE_URL } from "./api";
 
@@ -10,6 +9,7 @@ interface TodoItem {
   todo_extra?: string;
   deadline?: string;
   important: boolean;
+  position: number;
 }
 
 function App() {
@@ -18,7 +18,6 @@ function App() {
   const [newExtraTodoText, setExtraTodoText] = useState("");
   const [isImp, setImp] = useState(false);
   const [date, setDate] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
 
   const fetchTodo = async () => {
     try {
@@ -60,6 +59,26 @@ function App() {
     } catch (error) {
       console.log("Error adding todo: ", error);
     }
+  };
+
+  const reorderTodos = async (newOrder: TodoItem[]) => {
+	setTodos(newOrder);
+
+	try {
+		await fetch(`${API_BASE_URL}/api/todos/reorder`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				order: newOrder.map((t) => t.id),
+			}),
+		});
+	} catch (error) {
+		console.error("Error reordering todos: ", error);
+
+		await fetchTodo();
+	}
   };
 
   const deleteTodo = async (id: number) => {
@@ -140,7 +159,6 @@ function App() {
         <div className="row custom-row">
           <div className="col-5 text-center">
             <h1 className="headers">Create Todo</h1>
-            {showAlert && <Alert setShowAlert={setShowAlert}></Alert>}
             <div className="input-container">
               <input
                 type="text"
@@ -187,6 +205,7 @@ function App() {
             onDelete={deleteTodo}
             onEdit={editTodo}
             onToggleImportance={toggleImportance}
+			onReorder={reorderTodos}
           />
         </div>
       </div>
