@@ -7,6 +7,7 @@ interface Props {
   todo: string;
   todo_extra?: string;
   date: string;
+  important: boolean;
   onDelete: (id: number) => void;
   onEdit: (id: number, newText: string) => void;
   onToggleImportance: (id: number) => void;
@@ -17,6 +18,7 @@ const Todo = ({
   todo,
   todo_extra,
   date,
+  important,
   onDelete,
   onEdit,
   onToggleImportance,
@@ -71,6 +73,7 @@ const Todo = ({
     <div className={`todo-wrapper ${todo_extra && isExpanded ? "has-extra-expanded" : ""}`}>
       <div key={todo_id} className="todo-container">
         {date && <span className="todo-deadline">{formatDate(date)}</span>}
+		{important && <span className="important-badge">⭐</span>}
         {isEditing ? (
           <input
             ref={inputRef}
