@@ -10,11 +10,6 @@ body {
   height: 100vh;
 }
 
-.custom-row {
-  height: 100%;
-  margin: 0 -20%;
-}
-
 .headers {
   font-family: "BBH Sans Hegarty", sans-serif;
   margin-top: 100px;
@@ -152,6 +147,8 @@ body {
   width: 200px;
   height: 50px;
   font-size: 1.3rem;
+  height: 100%;
+  margin: 0 -15%; /* Adjusted for sidebar */
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   border-radius: 25px;
@@ -169,6 +166,144 @@ body {
   transform: translateY(-3px);
   box-shadow: 0 8px 30px rgba(30, 58, 138, 0.4);
   color: white;
+}
+
+/* Sidebar Component */
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-right: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 30px 15px;
+  height: 100vh;
+  overflow-y: auto;
+  /* Remove width: 100% if it exists, let Bootstrap handle it */
+}
+
+.sidebar-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-item:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
+}
+
+.list-item.active {
+  background: rgba(30, 58, 138, 0.2);
+  border: 2px solid rgba(30, 58, 138, 0.4);
+  box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+.list-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 10px;
+}
+
+.list-name {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  flex: 1;
+}
+
+.list-count {
+  background: rgba(30, 58, 138, 0.2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.list-actions {
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.list-item:hover .list-actions {
+  opacity: 1;
+}
+
+.list-rename-btn,
+.list-delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.list-rename-btn {
+  color: #1e3a8a;
+}
+
+.list-rename-btn:hover {
+  transform: scale(1.2);
+  color: #0c4a6e;
+}
+
+.list-delete-btn {
+  color: #dc2626;
+  font-size: 1.5rem;
+}
+
+.list-delete-btn:hover {
+  transform: scale(1.2);
+  color: #991b1b;
+}
+
+.create-list-btn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(30, 58, 138, 0.8);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-list-btn:hover {
+  background: rgba(30, 58, 138, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);
 }
 
 /* Todo Component */

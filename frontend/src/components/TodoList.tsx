@@ -22,6 +22,7 @@ interface TodoItem {
   deadline?: string;
   important: boolean;
   position: number;
+  list_id: number;
 }
 
 interface Props {
@@ -60,7 +61,7 @@ const TodoList = ({
     }
   };
   return (
-    <div className="col-7 text-center">
+    <div className="col-6 text-center">
       <h1 className="headers">{title}</h1>
       <div className="todo-list-container">
         <DndContext
